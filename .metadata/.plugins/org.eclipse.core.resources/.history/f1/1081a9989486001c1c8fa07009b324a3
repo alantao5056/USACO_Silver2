@@ -1,0 +1,34 @@
+import java.util.Scanner;
+
+public class Frisbee {
+
+  public static void main(String[] args) throws Exception {
+    Scanner sc = new Scanner(new java.io.File("1.in"));
+//    Scanner sc = new Scanner(System.in);
+    
+    int N = sc.nextInt();
+    int[] cows = new int[N];
+    for (int i = 0; i < N; i++) {
+      cows[i] = sc.nextInt();
+    }
+    
+    long count = 0;
+    
+    for (int i = 0; i < N; i++) {
+      int max = -1;
+      for (int j = i+1; j < N; j++) {
+        if (max < cows[j]) {
+          count += j-i;
+        }
+        
+        max = Math.max(max, cows[j]);
+        if (max < cows[i]) break;
+      }
+    }
+    
+    System.out.println(count);
+    
+    sc.close();
+  }
+
+}

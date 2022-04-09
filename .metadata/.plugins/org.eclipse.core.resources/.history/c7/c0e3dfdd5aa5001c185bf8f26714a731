@@ -1,0 +1,116 @@
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.Stack;
+
+public class Cereal2 {
+  private static boolean[] cowsVisited;
+  
+  public static void main(String[] args) throws Exception {
+    Scanner sc = new Scanner(new java.io.File("1.in"));
+//    Scanner sc = new Scanner(System.in);
+    
+    int N = sc.nextInt();
+    int M = sc.nextInt();
+    cowsVisited = new boolean[N+1]; 
+    
+    // read and init cereals
+    Cereal[] cereals = new Cereal[M+1];
+    for (int i = 1; i < N+1; i++) {
+      int a = sc.nextInt();
+      int b = sc.nextInt();
+      if (cereals[a] == null) {
+        cereals[a] = new Cereal(a);
+      }
+      if (cereals[b] == null) {
+        cereals[b] = new Cereal(b);
+      }
+      cereals[a].neighbors.add(cereals[b]);
+      cereals[b].neighbors.add(cereals[a]);
+      cereals[a].cows.add(i);
+      cereals[b].cows.add(i);
+    }
+    
+    // find groups
+    List<Group> groups = new ArrayList<>();
+    for (int i = 1; i < M; i++) {
+      if (cereals[i] != null && !cereals[i].visited) {
+        Cereal groupStart = cereals[i];
+        Group curGroup = new Group(groupStart);
+        
+        Stack<Cereal> stack = new Stack<>();
+        stack.add(cereals[i]);
+        cereals[i].visited = true;
+        
+        while (!stack.isEmpty()) {
+          Cereal curCereal = stack.peek();
+          curGroup.allCows.addAll(curCereal.cows);
+          int nextCowIdx = curCereal.getNextCowIdx();
+          if (nextCowIdx == -1) {
+            // done
+            stack.pop();
+          } else {
+            curGroup.visitedCows.add(curCereal.cows.get(nextCowIdx));
+            curCereal.neighbors.get(nextCowIdx).visited = true;
+            stack.push(curCereal.neighbors.get(nextCowIdx));
+          }
+        }
+        
+        groups.add(curGroup);
+      }
+    }
+    
+    sc.close();
+  }
+  
+//  private static int processGroup(Cereal startCereal, List<Integer> order) {
+//    // TODO
+//  }
+  
+  private static class Group {
+    Cereal startCereal;
+    Set<Integer> allCows = new HashSet<>();
+    Set<Integer> visitedCows = new HashSet<>();
+    
+    public Group (Cereal startCereal) {
+      this.startCereal = startCereal;
+    }
+    
+    @Override
+    public String toString() {
+    // TODO Auto-generated method stub
+//      return allCows.toString();
+      return visitedCows.toString();
+    }
+  }
+  
+  private static class Cereal {
+    int id;
+    List<Cereal> neighbors = new ArrayList<>();
+    List<Integer> cows = new ArrayList<>();
+    boolean visited = false;
+    int cowsIdx = 0;
+    
+    public Cereal(int id) {
+      this.id = id;
+    }
+    @Override
+    public String toString() {
+      return Integer.toString(id);
+    }
+    
+    public int getNextCowIdx() {
+      while (cowsIdx < cows.size() && neighbors.get(cowsIdx).visited) {
+        cowsIdx++;
+      }
+      if (cowsIdx < cows.size()) {
+        return cowsIdx;
+      }
+      return -1;
+    }
+  }
+}

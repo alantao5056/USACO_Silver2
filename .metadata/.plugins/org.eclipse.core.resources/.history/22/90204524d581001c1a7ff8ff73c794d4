@@ -1,0 +1,41 @@
+import java.util.Scanner;
+
+public class Soulmates {
+
+  public static void main(String[] args) throws Exception {
+    Scanner sc = new Scanner(new java.io.File("1.in"));
+//    Scanner sc = new Scanner(System.in);
+    
+    int N = sc.nextInt();
+    
+    for (int i = 0; i < N; i++) {
+      long a = sc.nextLong();
+      long b = sc.nextLong();
+      
+      System.out.println(getMinChange(a, b));
+    }
+    
+    sc.close();
+  }
+  
+  private static long getMinChange(long a, long b) {
+    if (a > b) {
+      int count = 0;
+      while (a > b) {
+        if ((a & 1) == 0) {
+          // even
+          a /= 2;
+          count++;
+        } else {
+          a++;
+          a /= 2;
+          count += 2;
+        }
+      }
+      count += b-a;
+      return count;
+    }
+    return -1;
+  }
+
+}

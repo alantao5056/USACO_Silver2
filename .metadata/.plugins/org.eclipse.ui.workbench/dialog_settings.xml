@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ImportExportAction">
+		<item key="ImportExportPage.STORE_SELECTED_IMPORT_WIZARD_ID" value="org.eclipse.ui.wizards.import.Preferences"/>
+		<list key="ImportExportPage.STORE_EXPANDED_IMPORT_CATEGORIES">
+			<item value="org.eclipse.ui.Basic"/>
+		</list>
+	</section>
+	<section name="PreferencesImportWizard">
+		<item key="" value="C:\git\alantao\eclipse-preferences.epf"/>
+		<item key="" value="C:\git\alantao\eclipse-preferences.epf"/>
+		<list key="WizardPreferencesExportPage1.STORE_DESTINATION_NAMES_ID">
+			<item value="C:\git\alantao\eclipse-preferences.epf"/>
+			<item value="C:\Users\alant_y0nj87x\Downloads\theme-46091.epf"/>
+			<item value="C:\Users\alant_y0nj87x\Downloads\theme-44525.epf"/>
+			<item value="C:\Users\alant_y0nj87x\Downloads\theme-386.epf"/>
+			<item value="C:\Users\alant_y0nj87x\Downloads\theme-1004.epf"/>
+		</list>
+	</section>
+</section>
