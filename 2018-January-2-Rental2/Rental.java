@@ -62,7 +62,10 @@ public class Rental {
     int left = cows[j];
     while (i < j && (offerIdx < M || rentsIdx < R)) {
       // calculate offer
-      if (!offered) {
+      if (offerIdx < M && !offered) {
+        offerIdx2 = offerIdx;
+        offerCost = 0;
+        left = cows[j];
         while (offerIdx2 < M && offers[offerIdx2][1] <= left) {
           offerCost += offers[offerIdx2][0] * offers[offerIdx2][1];
           left -= offers[offerIdx2][1];
@@ -75,30 +78,37 @@ public class Rental {
         }
       }
 
-      if (offerIdx2 < M && rentsIdx < R && offerCost > rents[rentsIdx]) {
+      if ((offerIdx2 < M && rentsIdx >= R) || (offerIdx2 < M && offerCost > rents[rentsIdx])) {
         offerIdx = offerIdx2;
         offers[offerIdx][1] -= left;
         total += offerCost;
         j--;
-        offered = true;
+        offered = false;
+        if (offerIdx == M-1 && offers[M-1][1] <= 0) {
+          // ran out
+          offerIdx = M;
+        }
       } else if (rentsIdx < R) {
         total += rents[rentsIdx];
         rentsIdx++;
         i++;
-        offered = false;
+        offered = true;
       }
     }
     if (!offered) {
-    while (offerIdx < M && offers[offerIdx][1] <= left) {
-        offerCost += offers[offerIdx][0] * offers[offerIdx][1];
-        left -= offers[offerIdx][1];
-        offerIdx++;
+      offerIdx2 = offerIdx;
+      offerCost = 0;
+      left = cows[j];
+      while (offerIdx2 < M && offers[offerIdx2][1] <= left) {
+        offerCost += offers[offerIdx2][0] * offers[offerIdx2][1];
+        left -= offers[offerIdx2][1];
+        offerIdx2++;
       }
-      if (offerIdx < M) {
-        offerCost += offers[offerIdx][0] * left;
+      if (offerIdx2 < M) {
+        offerCost += offers[offerIdx2][0] * left;
       }
     }
-    total += Math.max(rents[rentsIdx], offerCost);
+    total += Math.max(rentsIdx < R ? rents[rentsIdx] : -1, offerCost);
 
     pw.println(total);
 
