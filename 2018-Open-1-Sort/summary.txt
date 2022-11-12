@@ -1,0 +1,6 @@
+This problem is easy if you find the pattern of bubble sort. So the pattern is that the elements 
+that need to go right gets there faster, and the elements that needs to go left gets there slower. 
+Specifically, the elements that need to go right instantly goes right one by one according to how 
+big their value is, and the values that go left shifts left every iteration until they reach their 
+destination. So the solution would be to figure out the longest it takes for an element that needs 
+to go left and then add one. (Because the last iteration is about checking if its all sorted)
