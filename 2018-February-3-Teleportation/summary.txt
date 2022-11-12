@@ -1,0 +1,8 @@
+For this problem the algorithm was trying to find how much each point on the number line
+saves you time. To do that, we need to split the start and destination into different 
+cases and then figuring out where the triangle of values is. Then we can record the slopes 
+of those triangles and use them to help figure out what is the max of the whole thing. 
+
+While I was doing this problem I made many mistakes. I forgot to add up the change in y, 
+and I instead just used that to compare with the max value. I also made a small mistake by
+accidentally writing || as &&, which made me really confused. 
