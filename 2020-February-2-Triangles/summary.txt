@@ -1,0 +1,10 @@
+While coming up with the solution of this problem, it might seem that every one of the solutions would 
+time out. However, with a few observations we can solve this problem easily. First of all, two times
+the area of the triangle is basically the sides parallel to the x and y axis. Secondly, if we fix one 
+point, we can use the other points with the same x and y as the fixed point, to make different 
+triangles with the right angle on the fixed point. But in order to do this for every point, it would 
+definetly time out. The only solution is to sort the points by x, then looking at all the points that 
+has the same x, and calculating each of their total x sum in O(1) time. The total x sum is the sum of 
+all the segments connecting a point to every other point with the same x. We can do the same with y, 
+and multiply the x and y together to get the total area of the triangles formed with the right angle 
+on this point. 
