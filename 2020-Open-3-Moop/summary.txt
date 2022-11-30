@@ -1,0 +1,2 @@
+First, visualize the problem on an coordinate plane. This would make it easier to see what we're 
+trying to figure out. Then, we need to give ourself examples and try to figure out the solution. 
