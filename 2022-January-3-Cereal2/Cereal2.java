@@ -1,25 +1,28 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.Stack;
+import java.io.PrintWriter;
+import java.io.StreamTokenizer;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class Cereal2 {
+  static StreamTokenizer st;
+
   public static void main(String[] args) throws Exception {
-    // Scanner sc = new Scanner(new java.io.File("test/5.in"));
-    Scanner sc = new Scanner(System.in);
+    // BufferedReader br = new BufferedReader(new FileReader("cereal2.in"));
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    st = new StreamTokenizer(br);
+    PrintWriter pw = new PrintWriter(System.out);
     
-    int N = sc.nextInt();
-    int M = sc.nextInt();
+    int N = nextInt();
+    int M = nextInt();
     
     // read and init cereals
     Cereal[] cereals = new Cereal[M+1];
     for (int i = 1; i < N+1; i++) {
-      int a = sc.nextInt();
-      int b = sc.nextInt();
+      int a = nextInt();
+      int b = nextInt();
       if (cereals[a] == null) {
         cereals[a] = new Cereal(a);
       }
@@ -68,13 +71,14 @@ public class Cereal2 {
       totalHungry += (hungry == -1 ? 0 : hungry);
     }
     
-    System.out.println(totalHungry);
+    pw.println(totalHungry);
     
     for (var o : order) {
-      System.out.println(o);
+      pw.println(o);
     }
     
-    sc.close();
+    br.close();
+    pw.close();
   }
   
   private static int processGroup(Group group, List<Integer> order) {
@@ -120,6 +124,16 @@ public class Cereal2 {
     }
     
     return remainCowsNum-1;
+  }
+
+  private static int nextInt() throws Exception {
+    st.nextToken();
+    return (int) st.nval;
+  }
+
+  private static String nextString() throws Exception {
+    st.nextToken();
+    return st.sval;
   }
   
   private static class Cow {
