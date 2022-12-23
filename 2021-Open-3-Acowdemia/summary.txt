@@ -1,0 +1,7 @@
+I first understood this problem wrong, and I thought that in order for the h-index to count, the papers must be consecutive. So I used sliding window to do it and found out that I only passed three cases.
+
+This would have a huge impact when I'm doing a problem in the real contest, because understanding the problem wrong is a very stupid mistake and can lead to a lot of time wasted and unnecesary work. 
+
+To avoid this in the future, I must read the problem several times, and also understanding each sentence fully while not assuming information not given the in the problem description. 
+
+When I understood the problem, I made another error coding it, because I thought it was very simple. I then had to spend more time trying to find out what I did wrong. The best way to do this is to make more test cases for yourself, until something weird happens or when you get an answer that was not what you expected. 
