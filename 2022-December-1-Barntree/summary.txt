@@ -1,0 +1,7 @@
+This problem is a plain recursion problem. It can be hard to wrap your head around. The only solution is to either find what each subtree needs in order to get balanced, and then to go recursively, and start with the first node. 
+
+If the node had neighbors that can have extra haybales, collect them. After collecting all of the haybales from the neighbors, we can then distribte the collected haybales to the other neighbors. 
+
+I wrote the correct solution, but I used string.format, which costed a ton of time, because it does a lot of background work. After I stopped using string.format, everything ran in a significantly less time. 
+
+The moral is to never use string.format for outputting large amounts of data. 

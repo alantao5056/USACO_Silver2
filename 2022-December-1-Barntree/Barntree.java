@@ -10,15 +10,16 @@ public class Barntree {
   static StreamTokenizer st;
   static int N;
   static int target;
-  static StringBuilder sb = new StringBuilder();
+  static List<Command> commands = new ArrayList<>();
+  static int t = 0;
 
   public static void main(String[] args) throws Exception {
     // read input
-    BufferedReader br = new BufferedReader(new FileReader("barntree.in"));
-    // BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    // BufferedReader br = new BufferedReader(new FileReader("barntree.in"));
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     st = new StreamTokenizer(br);
-    PrintWriter pw = new PrintWriter(new File("barntree.out"));
-    // PrintWriter pw = new PrintWriter(System.out);
+    // PrintWriter pw = new PrintWriter(new File("barntree.out"));
+    PrintWriter pw = new PrintWriter(System.out);
     N = nextInt();
     
     // solve
@@ -40,83 +41,103 @@ public class Barntree {
     }
 
     // make tree
-    assignParent(cows[0]);
+    recursiveNeeds(cows[0]);
 
     recursive(cows[0]);
 
-    pw.print(sb.toString());
+    pw.println(t);
+
+    for (Command c : commands) {
+      pw.print(c.start);
+      pw.print(" ");
+      pw.print(c.end);
+      pw.print(" ");
+      pw.println(c.value);
+    }
 
     br.close();
     pw.close();
   }
 
-  private static int recursive(Cow cow) {
-    if (cow.id != 0 && cow.nbs.size() == 1) {
-      // leaf
-      return target-cow.value;
-    }
-    // recieve
-    Queue<Integer> needs = new LinkedList<>();
-    for (Cow nb : cow.nbs) {
-      if (nb != cow.parent) {
-        int need = recursive(nb);
-        needs.add(need);
-        if (need < 0) {
-          sb.append(String.format("%d %d %d\n", nb.id+1, cow.id+1, need*-1));
-          nb.value = target;
-          cow.value += need * -1;
-        }
-      }
-    }
+  private static void add(int s, int e, long value) {
+    commands.add(new Command(s, e, value));
+  }
 
-    int needFromParent = 0;
+  private static void recursive(Cow cow) {
+    // recieve
     for (Cow nb : cow.nbs) {
       if (nb != cow.parent) {
-        int need = needs.poll();
-        if (need > 0) {
-          if (need <= cow.value - target) {
-            // can give
-            sb.append(String.format("%d %d %d\n", cow.id+1, nb.id+1, need));
+        if (nb.need >= 0) {
+          // can recieve
+          recursive(nb);
+          if (nb.need != 0) {
+            add(nb.id+1, cow.id+1, nb.need);
             nb.value = target;
-            cow.value -= need;
-          } else if (cow.value > target) {
-            // still can give a part
-            sb.append(String.format("%d %d %d\n", cow.id+1, nb.id+1, cow.value - target));
-            needFromParent += target - nb.value - (cow.value-target);
-            nb.value += cow.value - target;
-            cow.value = target;
-          } else {
-            needFromParent += target - nb.value;
+            cow.value += nb.need;
+            t++;
           }
         }
       }
     }
 
-    if (needFromParent == 0) {
-      return target - cow.value;
-    }
-    return needFromParent;
-  }
-
-
-  private static void assignParent(Cow c) {
-    for (Cow nb : c.nbs) {
-      if (nb != c.parent) {
-        nb.parent = c;
-        assignParent(nb);
+    // give
+    for (Cow nb : cow.nbs) {
+      if (nb != cow.parent) {
+        if (nb.need < 0) {
+          add(cow.id+1, nb.id+1, nb.need*-1);
+          nb.value += nb.need*-1;
+          cow.value -= nb.need*-1;
+          recursive(nb);
+          t++;
+        }
       }
     }
   }
+
+  private static long recursiveNeeds(Cow cow) {
+    long totalNeed = cow.value - target;
+    for (Cow nb : cow.nbs) {
+      if (nb != cow.parent) {
+        nb.parent = cow;
+        totalNeed += recursiveNeeds(nb);
+      }
+    }
+
+    cow.need = totalNeed;
+    return totalNeed;
+  }
+
+  // private static void assignParent(Cow c) {
+  //   for (Cow nb : c.nbs) {
+  //     if (nb != c.parent) {
+  //       nb.parent = c;
+  //       assignParent(nb);
+  //     }
+  //   }
+  // }
 
   private static class Cow {
     Cow parent;
     List<Cow> nbs = new ArrayList<>();
     int value;
     int id;
+    long need;
 
     public Cow(int value, int id) {
       this.value = value;
       this.id = id;
+    }
+  }
+
+  private static class Command {
+    int start;
+    int end;
+    long value;
+
+    public Command(int start, int end, long value) {
+      this.start = start;
+      this.end = end;
+      this.value = value;
     }
   }
 
